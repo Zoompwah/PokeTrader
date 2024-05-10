@@ -2,12 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from PokeTrader.collection.models import Card
 
-class Deck(models.Model):
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    username = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
-    description = models.CharField(max_length=100)
-    cards = models.ManyToManyField(Card, related_name='decks')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.DecimalField(max_digits=2, decimal_places=1, default=0.0)
 
-    def __str__(self):
-        return self.name
+class Deck(models.Model):
+    deck_name = models.CharField(max_length=100)
+    deck_description = models.TextField()
+    deck_rating = models.FloatField()
+    deck_cards = models.ManyToManyField(Card)
+    trader = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='decks')
