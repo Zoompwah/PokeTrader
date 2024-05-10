@@ -40,7 +40,15 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'collection',
+    'crispy_forms',
+    'crispy_bootstrap4',
+    'poketrader',
+    'users',    
 ]
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
