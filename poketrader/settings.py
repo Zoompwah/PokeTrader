@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap4',
     'poketrader',
-    'users',    
+    'users',
+    'market',    
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -138,3 +139,5 @@ TAILWIND_APP_NAME = 'theme'
 INTERNAL_IPS = [
         '127.0.0.1',
 ]
+
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
