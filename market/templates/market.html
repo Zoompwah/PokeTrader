@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mx-auto px-4 py-8">
+
+    <!-- Search Form -->
+    <div class="flex justify-center mb-8">
+        <form class="w-full max-w-lg" method="GET" action="">
+            {% csrf_token %}
+            <div class="relative flex items-center">
+                <input type="search" name="keyword" class="flex-1 p-4 pl-10 text-sm border border-gray-300 rounded-lg focus:ring-blue-500" placeholder="Search games">
+                <button type="submit" class="ml-4 bg-blue-700 hover:bg-blue-800 text-white font-medium rounded-lg text-sm px-4 py-2 focus:ring-blue-500">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-6">
+        {% for listing in listings %}
+        <a href="" class="text-center text-white rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <img src="{{ listing.card.card_image }}" alt="{{ listing.card.name }}" class="w-full h-auto">
+            <div class="p-4">
+                <h5 class="font-bold text-xl">{{ listing.card.name }}</h5>
+                <p class="text-gray-400">Price: Rp.{{ listing.price }}</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    document.getElementById('toggleNotifications').addEventListener('click', function() {
+        var notificationArea = document.getElementById('notification-area');
+        notificationArea.classList.toggle('hidden');
+    });
+</script>
+
+{% endblock %}

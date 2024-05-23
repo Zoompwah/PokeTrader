@@ -4,18 +4,14 @@ from .models import Listing, Transaction, Notification
 from collection.models import Card
 from .forms import ListingForm
 
-@login_required
 def market(request):
-    listings = Listing.objects.filter(is_active=True).exclude(seller=request.user)
-    notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
-    return render(request, 'market.html', {'listings': listings,'notifications': notifications})
+    listings = Listing.objects.filter(is_active=True)
+    return render(request, 'market.html', {'listings': listings})
 
-@login_required
 def card_detail(request, card_id):
     card = Card.objects.get(pk=card_id)
     return render(request, 'card_detail.html', {'card': card})
 
-@login_required
 def create_listing(request):
     if request.method == 'POST':
         form = ListingForm(request.POST, user=request.user)
@@ -28,7 +24,7 @@ def create_listing(request):
         form = ListingForm(user=request.user)
     return render(request, 'create_listing.html', {'form': form})
 
-@login_required
+
 def purchase_card(request, listing_id):
     listing = Listing.objects.get(pk=listing_id, is_active=True)
     if request.user != listing.seller:
@@ -49,7 +45,6 @@ def purchase_card(request, listing_id):
         return redirect('transaction_history')
     return redirect('market')
 
-@login_required
 def make_offer(request, listing_id):
     listing = Listing.objects.get(pk=listing_id, is_active=True)
     if request.method == 'POST':
@@ -71,14 +66,12 @@ def make_offer(request, listing_id):
             return redirect('market')
     return render(request, 'make_offer.html', {'listing': listing})
 
-@login_required
 def mark_notification_read(request, notification_id):
     notification = Notification.objects.get(pk=notification_id, recipient=request.user)
     notification.read = True
     notification.save()
     return redirect(request.GET.get('next', 'market:market'))
 
-@login_required
 def accept_offer(request, notification_id):
     notification = Notification.objects.get(pk=notification_id, recipient=request.user)
     transaction = notification.transaction
@@ -88,7 +81,6 @@ def accept_offer(request, notification_id):
     notification.save()
     return redirect('notifications')
 
-@login_required
 def reject_offer(request, notification_id):
     notification = Notification.objects.get(pk=notification_id, recipient=request.user)
     transaction = notification.transaction
