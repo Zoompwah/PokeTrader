@@ -8,6 +8,10 @@ def market(request):
     listings = Listing.objects.filter(is_active=True)
     return render(request, 'market.html', {'listings': listings})
 
+def notifications(request):
+    notifications = Notification.objects.filter(recipient=request.user)
+    return render(request, 'notifications.html', {'notifications': notifications})
+
 def card_detail(request, card_id):
     card = Card.objects.get(pk=card_id)
     return render(request, 'card_detail.html', {'card': card})
