@@ -1,9 +1,9 @@
-FROM python:3.11-bookworm
+FROM python:3.12-bookworm
 
 WORKDIR /app
 
-RUN apt-get update --yes --quiet
-RUN apt-get install --yes --quiet --no-install-recommends
+RUN apt-get update --yes
+RUN apt-get install --yes --no-install-recommends
 RUN apt-get install nodejs -y
 RUN apt install npm -y --fix-missing
 
