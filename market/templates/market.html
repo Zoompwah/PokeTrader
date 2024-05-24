@@ -15,11 +15,11 @@
 
     <div class="grid grid-cols-3 md:grid-cols-6 gap-6">
         {% for listing in listings %}
-        <a href="{% url 'market:card_detail' listing.collection.id %}" class="text-center text-white rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+        <a href="{% url 'market:card_detail' listing.collection.id %}" class="text-center text-black rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
             <img src="{{ listing.collection.card.card_image }}" alt="{{ listing.collection.card.name }}" class="w-full h-auto">
             <div class="p-4">
                 <h5 class="font-bold text-xl">{{ listing.collection.card.name }}</h5>
-                <p class="text-gray-400">Price: Rp.{{ listing.price }}</p>
+                <p class="text-black-400">Price: Rp.{{ listing.price }}</p>
             </div>
         </a>
         {% endfor %}

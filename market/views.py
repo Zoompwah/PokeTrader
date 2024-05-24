@@ -106,6 +106,11 @@ def reject_offer(request, notification_id):
     transaction = notification.transaction
     transaction.status = 'rejected'
     transaction.save()
+    Notification.objects.create(
+            recipient=transaction.buyer,
+            message=f"Your offer of ${transaction.price} on {transaction.listing.collection.card.name} has been rejected by '{transaction.seller}'.",
+            transaction=transaction
+            )
     notification.read = True
     notification.save()
     return redirect('market:notifications')
