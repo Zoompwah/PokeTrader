@@ -12,6 +12,7 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
+RUN python manage.py init_data
 RUN python manage.py tailwind install
 RUN python manage.py tailwind build
 RUN python manage.py collectstatic --noinput --clear
