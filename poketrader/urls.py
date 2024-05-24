@@ -19,10 +19,12 @@ from django.urls import path, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
+    path('', include('main.urls')),
     path('admin/', admin.site.urls),
     path('collection/', include('collection.urls')),
     path('users/', include('users.urls')),
     path('market/', include('market.urls')),
+    path('decks/', include('decks.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
