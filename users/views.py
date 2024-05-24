@@ -17,12 +17,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, f"New account created: {user.username}")
             return HttpResponseRedirect('/')
-
-        else:
-            for error in list(form.errors.values()):
-                messages.error(request, error)
 
     else:
         form = UserRegistrationForm()
@@ -41,16 +36,7 @@ def custom_login(request):
             )
             if user is not None:
                 login(request, user)
-                messages.success(request, f"Hello <b>{user.username}</b>! You have been logged in")
                 return redirect("/")
-
-        else:
-            for key, error in list(form.errors.items()):
-                if key == 'captcha' and error[0] == 'This field is required.':
-                    messages.error(request, "You must pass the reCAPTCHA test")
-                    continue
-                
-                messages.error(request, error) 
 
     form = UserLoginForm()
 
@@ -63,7 +49,6 @@ def custom_login(request):
 @login_required
 def custom_logout(request):
     logout(request)
-    messages.info(request, "Logged out successfully!")
     return HttpResponseRedirect('login')
 
 def profile(request, username):
@@ -72,11 +57,7 @@ def profile(request, username):
         form = UserUpdateForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             user_form = form.save()
-            messages.success(request, f'{user_form.username}, Your profile has been updated!')
             return redirect("profile", user_form.username)
-
-        for error in list(form.errors.values()):
-            messages.error(request, error)
 
     user = get_user_model().objects.filter(username=username).first()
     if user:
