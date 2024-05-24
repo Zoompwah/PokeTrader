@@ -15,7 +15,7 @@
             {% csrf_token %}
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                 {% for c in all_cards %}
-                <div class="bg-white shadow-md rounded-lg overflow-hidden" id="card{{c.id}}_div" onclick="document.getElementById('card{{ c.id }}').click(); document.getElementById('card{{ c.id }}').checked? document.getElementById('card{{ c.id }}_div').classList.add('bg-blue-300'):document.getElementById('card{{ c.id }}_div').classList.remove('bg-blue-300')">
+                <div class="bg-white shadow-md rounded-lg overflow-hidden" id="card{{c.id}}_div" onclick="document.getElementById('card{{ c.id }}').click(); document.getElementById('card{{ c.id }}').checked? document.getElementById('card{{ c.id }}_div').classList.add('!bg-blue-300'):document.getElementById('card{{ c.id }}_div').classList.remove('!bg-blue-300')">
                     <div class="h-64 flex items-center justify-center">
                         <img src="{{ c.card_image }}" alt="{{ c.name }}" class="object-contain h-full">
                     </div>
