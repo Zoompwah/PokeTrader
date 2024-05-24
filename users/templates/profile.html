@@ -1,39 +1,41 @@
 {% block content %}
-<div class="content-section col-lg-12 col-md-12 col-sm-12 tutorial-style" style="min-height:65vh;">
-    <legend class="border-bottom mb-4">Profile Information:</legend>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="media">
-            <div class="media-body">
-                <h2 class="account-heading">{{ form.instance.username }}
-                    <small class="text-muted">({{ form.instance.status }})</small>
-                </h2>
-                <p class="text-secondary">{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
-                <p class="text-secondary">{{ form.instance.email }}</p>
-                <p class="text-secondary">{{ form.instance.description }}</p>
-            </div>
+
+{% load crispy_forms_tags %}
+
+<div class="content-section col-lg-12 col-md-12 col-sm-12 tutorial-style min-h-screen">
+    <legend class="border-b mb-4 text-lg font-bold">Profile Information:</legend>
+    <div class="flex items-start">
+        <div class="flex-1">
+            <h2 class="text-xl font-semibold">{{ form.instance.username }}
+                <small class="text-sm text-gray-500">({{ form.instance.status }})</small>
+            </h2>
+            <p class="text-sm text-black">{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
+            <p class="text-sm text-gray-500">{{ form.instance.email }}</p>
+            <p class="text-sm text-gray-500">{{ form.instance.description }}</p>
         </div>
+    </div>
 
-        {% if user.username == form.instance.username %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Edit Profile Information</legend>
-                <div class="form-row">
-                    <div class="form-group col-md-6 mb-0">
-                        {{ form.first_name|as_crispy_field }}
-                    </div>
-                    <div class="form-group col-md-6 mb-0">
-                        {{ form.last_name|as_crispy_field }}
-                    </div>
-                </div> 
-                {{ form.email|as_crispy_field }}
-                {{ form.description|as_crispy_field }}
-
-                <a href="/">Change password?</a>
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Update</button>
+    {% if user.username == form.instance.username %}
+    <fieldset class="mt-1.5 border-b pb-4">
+        <legend class="text-lg font-bold mb-4">Edit Profile Information</legend>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    {{ form.first_name|as_crispy_field }}
+                </div>
+                <div>
+                    {{ form.last_name|as_crispy_field }}
+                </div>
             </div>
-        {% endif %}
-    </form>
+            {{ form.email|as_crispy_field }}
+            {{ form.description|as_crispy_field }}
+
+            <div class="mt-4">
+                <button class="btn-update">Update</button>
+            </div>
+        </form>
+    </fieldset>
+    {% endif %}
 </div>
 {% endblock content %}
