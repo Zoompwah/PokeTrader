@@ -145,3 +145,5 @@ TAILWIND_APP_NAME = 'theme'
 INTERNAL_IPS = [
         '127.0.0.1',
 ]
+
+CSRF_TRUSTED_ORIGINS = ['https://eshop-muhammadoka.koyeb.app']
