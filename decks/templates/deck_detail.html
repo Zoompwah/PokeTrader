@@ -25,18 +25,22 @@
                     <div class="flex-shrink-0 pr-4">
                         <img src="{{ card.card_image }}" alt="{{ deck_card.card.name }}" class="card-image">
                     </div>
-                    <div>
-                        <p class="text-2xl font-bold mb-2">{{ card.name }}</p>
-                        <p class="text-xl mb-2"><strong>Type:</strong> {{ card.types }}</p>
-                        <p class="text-xl mb-2"><strong>Ability:</strong> {{ card.abilities }}</p>
-                        <p class="text-xl mb-2"><strong>Attack:</strong> {{ card.attacks }}</p>
-                        <p class="text-xl mb-2"><strong>Weakness:</strong> {{ card.weaknesses }}</p>
-                        {% if request.user == deck.trader %}
-                        <form action="{% url 'delete_card' deck_id=deck.id card_id=card.id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete Card</button>
-                        </form>
-                        {% endif %}
+                    <div class="flex flex-col justify-around">
+                        <div>
+                            <p class="text-2xl font-bold mb-2">{{ card.name }}</p>
+                            <p class="text-xl mb-2"><strong>Type:</strong> {{ card.types }}</p>
+                            <p class="text-xl mb-2"><strong>Ability:</strong> {{ card.abilities }}</p>
+                            <p class="text-xl mb-2"><strong>Attack:</strong> {{ card.attacks }}</p>
+                            <p class="text-xl mb-2"><strong>Weakness:</strong> {{ card.weaknesses }}</p>
+                        </div>
+                        <div>
+                            {% if request.user == deck.trader %}
+                            <form action="{% url 'delete_card' deck_id=deck.id card_id=card.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete Card</button>
+                            </form>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             {% endfor %}
