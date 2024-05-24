@@ -27,7 +27,7 @@ class Command(BaseCommand):
                 for weakness in weaknesses_json:
                     weaknesses.append(weakness.get('type', ''))
 
-                Card.objects.create(
+                Card.objects.get_or_create(
                     name = card.get('name', ''),
                     card_image = card.get('images', '').get('small', ''),
                     types = card.get('types', ''),

@@ -2,16 +2,28 @@
 {% block content %}
 <div class="container mx-auto px-4 py-8">
     {% if notifications %}
-    <div id="notification-area" class="p-4 mb-4 ">
+    <div id="notification-area" class="p-4 mb-4">
         {% for notification in notifications %}
         <div class="bg-blue-800 rounded-lg p-3 shadow-lg mb-2 flex justify-between items-center">
             <span>{{ notification.message }}</span>
-            <a href="{% url 'mark_notification_read' notification.id %}" class="ml-4 text-blue-400 hover:text-blue-600 cursor-pointer">Mark as read</a>
+            <div class="flex space-x-2">
+                {% if notification.transaction.status == 'offer_made' %}
+                <a href="{% url 'market:accept_offer' notification.id %}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Accept</a>
+                <a href="{% url 'market:reject_offer' notification.id %}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Reject</a>
+                {% endif %}
+                {% if user == notification.transaction.listing.seller %}
+                    {% if notification.transaction.status == 'pending' %}
+                    <a href="{% url 'market:cancel_transaction' notification.id %}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Cancel</a>
+                    <a href="{% url 'market:complete_transaction' notification.id %}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Mark as Complete</a>
+                    {% endif %}
+                {% endif %}
+                <a href="{% url 'market:mark_notification_read' notification.id %}" class="ml-4 text-blue-400 hover:text-blue-600 cursor-pointer">Mark as read</a>
+            </div>
         </div>
         {% endfor %}
     </div>
     {% else %}
-    <div id="notification-area" class="p-4 mb-4 ">
+    <div id="notification-area" class="p-4 mb-4">
         No Notification
     </div>
     {% endif %}
