@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from PokeTrader.collection.models import Card
+from collection.models import Card
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
