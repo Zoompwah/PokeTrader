@@ -4,7 +4,11 @@ from .models import Listing, Transaction, Notification
 from collection.models import Collection
 
 def market(request):
-    listings = Listing.objects.filter(is_active=True)
+    query = request.GET.get('keyword', '')
+    if query:
+        listings = Listing.objects.filter(collection__card__name__icontains=query, is_active=True)
+    else:
+        listings = Listing.objects.filter(is_active=True)
     return render(request, 'market.html', {'listings': listings})
 
 def notifications(request):
@@ -85,15 +89,28 @@ def accept_offer(request, notification_id):
     transaction = notification.transaction
     transaction.status = 'accepted'
     transaction.save()
+    listing = transaction.listing
+    listing.is_active = False
+    listing.save()
     notification.read = True
     notification.save()
-    return redirect('notifications')
+    Notification.objects.create(
+            recipient=transaction.buyer,
+            message=f"Your offer of ${transaction.price} on {transaction.listing.collection.card.name} has been approved by '{transaction.seller}'.",
+            transaction=transaction
+            )
+    return redirect('market:notifications')
 
 def reject_offer(request, notification_id):
     notification = Notification.objects.get(pk=notification_id, recipient=request.user)
     transaction = notification.transaction
     transaction.status = 'rejected'
     transaction.save()
+    Notification.objects.create(
+            recipient=transaction.buyer,
+            message=f"Your offer of ${transaction.price} on {transaction.listing.collection.card.name} has been rejected by '{transaction.seller}'.",
+            transaction=transaction
+            )
     notification.read = True
     notification.save()
-    return redirect('notifications')
+    return redirect('market:notifications')
