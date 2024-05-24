@@ -23,6 +23,7 @@ urlpatterns = [
     path('collection/', include('collection.urls')),
     path('users/', include('users.urls')),
     path('market/', include('market.urls')),
+    path('decks/', include('decks.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
