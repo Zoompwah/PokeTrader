@@ -2,14 +2,17 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from collection.models import Card, Collection
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
 def view_collection(request):
     collection = Collection.objects.filter(user=request.user)
     context = {'collection': [c.card for c in collection]}
 
     return render(request, "collections.html", context)
 
+@login_required
 def add_cards_to_collection(request):
     if request.method == 'POST':
         cards_id = request.POST.getlist('cards')
@@ -23,6 +26,7 @@ def add_cards_to_collection(request):
 
     return render(request, "add_cards.html", context)
     
+@login_required
 def remove_cards_from_collection(request, card_id):
     if request.method == 'POST':
         try:
@@ -30,4 +34,4 @@ def remove_cards_from_collection(request, card_id):
         except:
             pass
 
-        return HttpResponseRedirect(reverse('collection:view_collection'))
+        return HttpResponseRedirect("/collection/")
