@@ -4,7 +4,7 @@ from collection.models import Collection
 
 class Listing(models.Model):
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    price = models.IntegerField()
     is_active = models.BooleanField(default=True)
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='listings', on_delete=models.CASCADE)
 
@@ -17,7 +17,7 @@ class Transaction(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
     buyer = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='purchases', on_delete=models.CASCADE)
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sales', on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    price = models.IntegerField()
     status = models.CharField(max_length=20, default='pending')
     offer_made = models.BooleanField(default=False)
 
