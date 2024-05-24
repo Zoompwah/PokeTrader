@@ -28,18 +28,6 @@
                             <textarea id="deck_description" name="deck_description" rows="3" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Describe your deck">{{ deck.deck_description }}</textarea>
                         </div>
                         
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Select Cards:</label>
-                            <div class="max-h-48 overflow-y-auto">
-                                {% for card in cards %}
-                                    <div class="flex items-center mb-2">
-                                        <input type="checkbox" id="card_{{ card.id }}" name="deck_cards" value="{{ card.id }}" class="mr-2" {% if card in deck.cards.all %}checked{% endif %}>
-                                        <label for="card_{{ card.id }}" class="text-gray-700">{{ card.name }}</label>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        
                         <div class="flex items-center justify-between">
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 Save Changes

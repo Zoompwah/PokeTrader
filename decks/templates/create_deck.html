@@ -34,7 +34,7 @@
                                 {% for card in cards %}
                                     <div class="flex items-center mb-2">
                                         <input type="checkbox" id="card_{{ card.id }}" name="deck_cards" value="{{ card.id }}" class="mr-2">
-                                        <label for="card_{{ card.id }}" class="text-gray-700">{{ card.image }}</label>
+                                        <label for="card_{{ card.id }}" class="text-gray-700">{{ card.name }}</label>
                                     </div>
                                 {% endfor %}
                             </div>

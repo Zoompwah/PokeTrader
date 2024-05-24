@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% include 'navbar.html'%}
 <div class="container mx-auto px-4 py-8">
     {% if notifications %}
     <div id="notification-area" class="p-4 mb-4">
@@ -23,7 +24,16 @@
     </div>
     {% else %}
     <div id="notification-area" class="p-4 mb-4">
-        No Notification
+        <div class="bg-white border-t border-b border-gray-300 text-gray-700 px-4 py-3 rounded-lg shadow-lg flex items-center" role="alert">
+            <svg class="fill-current w-6 h-6 mr-4 text-gray-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M10 2a8 8 0 11-8 8 8 8 0 018-8m0-2a10 10 0 1010 10A10 10 0 0010 0z"/>
+                <path d="M11 14H9v-2h2v2zm0-4H9V5h2v5z"/>
+            </svg>
+            <div>
+                <p class="font-bold">No Notifications</p>
+                <p class="text-sm">You don't have any notifications at the moment. Check back later!</p>
+            </div>
+        </div>
     </div>
     {% endif %}
 </div>

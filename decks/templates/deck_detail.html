@@ -25,12 +25,22 @@
                     <div class="flex-shrink-0 pr-4">
                         <img src="{{ card.card_image }}" alt="{{ deck_card.card.name }}" class="card-image">
                     </div>
-                    <div>
-                        <p class="text-2xl font-bold mb-2">{{ card.name }}</p>
-                        <p class="text-xl mb-2"><strong>Type:</strong> {{ card.types }}</p>
-                        <p class="text-xl mb-2"><strong>Ability:</strong> {{ card.abilities }}</p>
-                        <p class="text-xl mb-2"><strong>Attack:</strong> {{ card.attacks }}</p>
-                        <p class="text-xl mb-2"><strong>Weakness:</strong> {{ card.weaknesses }}</p>
+                    <div class="flex flex-col justify-around">
+                        <div>
+                            <p class="text-2xl font-bold mb-2">{{ card.name }}</p>
+                            <p class="text-xl mb-2"><strong>Type:</strong> {{ card.types }}</p>
+                            <p class="text-xl mb-2"><strong>Ability:</strong> {{ card.abilities }}</p>
+                            <p class="text-xl mb-2"><strong>Attack:</strong> {{ card.attacks }}</p>
+                            <p class="text-xl mb-2"><strong>Weakness:</strong> {{ card.weaknesses }}</p>
+                        </div>
+                        <div>
+                            {% if request.user == deck.trader %}
+                            <form action="{% url 'delete_card' deck_id=deck.id card_id=card.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete Card</button>
+                            </form>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             {% endfor %}
@@ -44,25 +54,26 @@
                     <input type="number" name="rating" id="rating" min="0" max="5" step="1" class="border-gray-400 border rounded py-2 px-3 mb-2">
                     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit Rating</button>
                 </form>
-                {% if messages %}
-                    <ul class="messages mt-4">
-                        {% for message in messages %}
-                            {% if message.tags == 'success' %}
-                                <li class="text-green-500">{{ message }}</li>
-                            {% else %}
-                                <li class="text-red-500">{{ message }}</li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                {% endif %}
             {% else %}
                 <div class="mt-6 text-center">
                     <a href="{% url 'edit_deck' deck.id%}" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 inline-block">Edit Decks</a>
-                    <a href="{% url 'delete_deck' deck.id %}" class="bg-red-500 hover:bg-Re-700 text-white font-bold py-2 px-4 rounded mt-4 inline-block">Delete Decks</a>
+                    <a href="{% url 'add_card' deck.id %}" class="bg-blue-500 hover:bg-Re-700 text-white font-bold py-2 px-4 rounded mt-4 inline-block">Add Card</a> 
                 </div>
             {% endif %}
         {% endif %}
         
+        {% if messages %}
+            <ul class="messages mt-4">
+                {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                        <li class="text-green-500">{{ message }}</li>
+                    {% else %}
+                        <li class="text-red-500">{{ message }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+
         <a href="{% url 'view_decks' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 inline-block">
             Back
         </a>
