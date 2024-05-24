@@ -9,10 +9,19 @@
         body {
             background-image: url('https://static.prod.pokemon.com/images/pikachu_pattern.png');
         }
+        .center-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .center-screen .max-w-md {
+            width: 100%;
+        }
     </style>
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
-    <div class="container mx-auto p-4">
+    <div class="center-screen">
         <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden">
             <div class="p-8">
                 <h1 class="text-2xl font-bold mb-4">Confirm Deck Deletion</h1>
