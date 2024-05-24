@@ -55,6 +55,11 @@
                         {% endfor %}
                     </ul>
                 {% endif %}
+            {% else %}
+                <div class="mt-6 text-center">
+                    <a href="{% url 'edit_deck' deck.id%}" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 inline-block">Edit Decks</a>
+                    <a href="{% url 'delete_deck' deck.id %}" class="bg-red-500 hover:bg-Re-700 text-white font-bold py-2 px-4 rounded mt-4 inline-block">Delete Decks</a>
+                </div>
             {% endif %}
         {% endif %}
         

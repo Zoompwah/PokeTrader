@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Deck - Pokémon Theme</title>
+    <title>Edit Deck - Pokémon Theme</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
@@ -16,16 +16,16 @@
         <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden">
             <div class="md:flex">
                 <div class="p-8 w-full">
-                    <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Create Your Pokémon Deck</div>
-                    <form action="{% url 'create_deck' %}" method="post" class="mt-6">
+                    <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Edit Your Pokémon Deck</div>
+                    <form action="{% url 'edit_deck' deck.id %}" method="post" class="mt-6">
                         {% csrf_token %}
                         <div class="mb-4">
                             <label for="deck_name" class="block text-gray-700 text-sm font-bold mb-2">Deck Name:</label>
-                            <input type="text" id="deck_name" name="deck_name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter deck name">
+                            <input type="text" id="deck_name" name="deck_name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter deck name" value="{{ deck.deck_name }}">
                         </div>
                         <div class="mb-4">
                             <label for="deck_description" class="block text-gray-700 text-sm font-bold mb-2">Deck Description:</label>
-                            <textarea id="deck_description" name="deck_description" rows="3" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Describe your deck"></textarea>
+                            <textarea id="deck_description" name="deck_description" rows="3" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Describe your deck">{{ deck.deck_description }}</textarea>
                         </div>
                         
                         <div class="mb-4">
@@ -33,8 +33,8 @@
                             <div class="max-h-48 overflow-y-auto">
                                 {% for card in cards %}
                                     <div class="flex items-center mb-2">
-                                        <input type="checkbox" id="card_{{ card.id }}" name="deck_cards" value="{{ card.id }}" class="mr-2">
-                                        <label for="card_{{ card.id }}" class="text-gray-700">{{ card.image }}</label>
+                                        <input type="checkbox" id="card_{{ card.id }}" name="deck_cards" value="{{ card.id }}" class="mr-2" {% if card in deck.cards.all %}checked{% endif %}>
+                                        <label for="card_{{ card.id }}" class="text-gray-700">{{ card.name }}</label>
                                     </div>
                                 {% endfor %}
                             </div>
@@ -42,7 +42,7 @@
                         
                         <div class="flex items-center justify-between">
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                Create Deck
+                                Save Changes
                             </button>
                         </div>
                     </form>
