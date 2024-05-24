@@ -8,4 +8,6 @@ urlpatterns = [
     path('create/', views.create_deck, name='create_deck'),
     path('<int:deck_id>/delete/', views.delete_deck, name='delete_deck'),
     path('<int:deck_id>/edit/', views.edit_deck, name='edit_deck'),
+    path('<int:deck_id>/delete_card/<int:card_id>', views.delete_card, name='delete_card'),
+    path('<int:deck_id>/add_card', views.add_card_to_deck, name='add_card'),
 ]
