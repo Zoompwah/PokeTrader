@@ -16,7 +16,4 @@ RUN python manage.py tailwind install
 RUN python manage.py tailwind build
 RUN python manage.py collectstatic --noinput --clear
 
-RUN chown -R django:django /app
-USER django
-
 CMD gunicorn poketrader.wsgi:application --bind 0.0.0.0:8000
