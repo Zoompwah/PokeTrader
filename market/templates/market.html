@@ -3,7 +3,6 @@
 
 <div class="container mx-auto px-4 py-8">
 
-    <!-- Search Form -->
     <div class="flex justify-center mb-8">
         <form class="w-full max-w-lg" method="GET" action="">
             {% csrf_token %}
@@ -14,7 +13,6 @@
         </form>
     </div>
 
-    <!-- Cards Grid -->
     <div class="grid grid-cols-3 md:grid-cols-6 gap-6">
         {% for listing in listings %}
         <a href="" class="text-center text-white rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
@@ -27,12 +25,5 @@
         {% endfor %}
     </div>
 </div>
-
-<script>
-    document.getElementById('toggleNotifications').addEventListener('click', function() {
-        var notificationArea = document.getElementById('notification-area');
-        notificationArea.classList.toggle('hidden');
-    });
-</script>
 
 {% endblock %}

@@ -68,7 +68,7 @@ def make_offer(request, listing_id):
             transaction=transaction
             )
             return redirect('market')
-    return render(request, 'make_offer.html', {'listing': listing})
+    return render(request, 'card_detail.html', {'listing': listing})
 
 def mark_notification_read(request, notification_id):
     notification = Notification.objects.get(pk=notification_id, recipient=request.user)
