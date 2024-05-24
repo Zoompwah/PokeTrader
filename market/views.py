@@ -4,7 +4,11 @@ from .models import Listing, Transaction, Notification
 from collection.models import Collection
 
 def market(request):
-    listings = Listing.objects.filter(is_active=True)
+    query = request.GET.get('keyword', '')
+    if query:
+        listings = Listing.objects.filter(collection__card__name__icontains=query, is_active=True)
+    else:
+        listings = Listing.objects.filter(is_active=True)
     return render(request, 'market.html', {'listings': listings})
 
 def notifications(request):
