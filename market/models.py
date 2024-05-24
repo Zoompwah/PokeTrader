@@ -1,9 +1,9 @@
 from django.db import models
 from django.conf import settings
-from collection.models import Card  
+from collection.models import Collection
 
 class Listing(models.Model):
-    card = models.OneToOneField(Card, on_delete=models.CASCADE)
+    collection = models.OneToOneField(Collection, on_delete=models.CASCADE,default=None)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     is_active = models.BooleanField(default=True)
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='listings', on_delete=models.CASCADE)

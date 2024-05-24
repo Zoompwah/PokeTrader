@@ -6,7 +6,7 @@
         {% for notification in notifications %}
         <div class="bg-blue-800 rounded-lg p-3 shadow-lg mb-2 flex justify-between items-center">
             <span>{{ notification.message }}</span>
-            <a href="{% url 'mark_notification_read' notification.id %}" class="ml-4 text-blue-400 hover:text-blue-600 cursor-pointer">Mark as read</a>
+            <a href="{% url 'market:mark_notification_read' notification.id %}" class="ml-4 text-blue-400 hover:text-blue-600 cursor-pointer">Mark as read</a>
         </div>
         {% endfor %}
     </div>

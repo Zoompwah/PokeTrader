@@ -4,14 +4,14 @@
 <div class="container mx-auto px-4 py-8">
 
     <div class="flex justify-center mb-8">
-        <form class="w-full max-w-lg" method="POST" action="{% url 'create_listing' %}">
+        <form class="w-full max-w-lg" method="POST" action="{% url 'market:create_listing' %}">
             {% csrf_token %}
             <div class="relative flex flex-col space-y-4">
                 <div>
-                    <label for="card" class="block text-sm font-medium text-gray-300">Card</label>
-                    <select id="card" name="card" class="block w-full p-4 pl-10 text-sm border border-gray-300 rounded-lg focus:ring-blue-500">
-                        {% for card in cards %}
-                        <option value="{{ card.id }}">{{ card.name }}</option>
+                    <label for="collection" class="block text-sm font-medium text-gray-300">Card</label>
+                    <select id="collection" name="collection" class="block w-full p-4 pl-10 text-sm border border-gray-300 rounded-lg focus:ring-blue-500">
+                        {% for collection in collections %}
+                        <option value="{{ collection.card.id }}">{{ collection.card.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
