@@ -49,6 +49,9 @@ def add_deck_rating(request, deck_id):
             # Get all ratings for the deck
             ratings = [deck.deck_rating for deck in Deck.objects.filter(id=deck_id)]
             
+            if len(ratings) == 1 and ratings[0] == 0:
+                ratings = []
+                
             # Add the new rating to the list
             ratings.append(new_rating)
             
@@ -61,6 +64,8 @@ def add_deck_rating(request, deck_id):
             
             # Save the user's rating to prevent them from rating again
             UserRating.objects.create(user=request.user, deck=deck, rating=new_rating)
+
+            messages.success(request, 'Rate successful!')
             
             return redirect('view_deck_details', deck_id=deck_id)
         else:

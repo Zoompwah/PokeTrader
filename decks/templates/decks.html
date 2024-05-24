@@ -9,24 +9,33 @@
         body {
             background-image: url('https://static.prod.pokemon.com/images/pikachu_pattern.png');
         }
+        .card-image {
+            width: 100%; /* Make the image take the full width of its container */
+            max-width: 200px; /* Limit the maximum width of the image */
+            height: auto; /* Maintain aspect ratio */
+            transition: transform 0.3s ease-in-out; /* Add transition effect */
+        }
+        .card-image:hover {
+            transform: scale(1.2); /* Scale up the image on hover */
+        }
     </style>
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
     <div class="container mx-auto p-4">
-        <h1 class="text-3xl font-bold mb-4">Decks List</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-black md:text-5xl lg:text-6xl text-center">PokeDecks</h1>
+        <p class="mb-8 text-lg font-normal text-gray-600 lg:text-xl sm:px-16 lg:px-48 text-center">by PokeTrader</p>
+        <div class="grid gap-4">
             {% for deck in decks %}
                 <div class="bg-white p-4 rounded-lg shadow-md">
-                    <h2 class="text-lg font-bold mb-2">{{ deck.deck_name }}</h2>
-                    <p class="mb-2">Description: {{ deck.deck_description }}</p>
+                    <h2 class="text-2xl font-extrabold mb-2">{{ deck.deck_name }}</h2>
+                    <p class="mb-2">{{ deck.deck_description }}</p>
                     <p class="mb-2">Rating: {{ deck.deck_rating }}</p>
                     <p class="mb-2">Created by: {{ deck.trader }}</p>
                     <h3 class="text-md font-bold mb-2">Cards in the Deck:</h3>
-                    <div class="grid grid-cols-2 gap-2">
+                    <div class="flex justify-center">
                         {% for deck_card in deck.deckcard_set.all %}
-                            <div class="flex items-center">
-                                <img src="{{ deck_card.card.card_image }}" alt="{{ deck_card.card.name }}" class="w-8 h-8 mr-2">
-                                <span>{{ deck_card.card.name }}</span>
+                            <div class="flex-shrink-0">
+                                <img src="{{ deck_card.card.card_image }}" alt="{{ deck_card.card.name }}" class="card-image">
                             </div>
                         {% endfor %}
                     </div>
