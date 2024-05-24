@@ -42,7 +42,7 @@ def custom_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Hello <b>{user.username}</b>! You have been logged in")
-                return redirect("market:market")
+                return redirect("homepage")
 
         else:
             for key, error in list(form.errors.items()):

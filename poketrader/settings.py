@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-t#ka*0drdm2h6vj!hu1m*#h^zgba6#+y2=pizqt*c7t7-m+h!w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*.koyeb.app', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -88,12 +88,8 @@ WSGI_APPLICATION = 'poketrader.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'poketrader',
-        'USER': 'postgres',
-        'PASSWORD': 'rfs30052004',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
