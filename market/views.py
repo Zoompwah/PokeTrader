@@ -97,16 +97,10 @@ def make_offer(request, listing_id):
         return card_detail(request, listing.collection.id)
     return render(request, 'card_detail.html', {'listing': listing})
 
-def mark_notification_read(request, notification_id):
-    notification = Notification.objects.get(pk=notification_id, recipient=request.user)
-    notification.read = True
-    notification.save()
-    return redirect(request.GET.get('next', 'market:market'))
-
 def accept_offer(request, notification_id):
     notification = Notification.objects.get(pk=notification_id, recipient=request.user)
     transaction = notification.transaction
-    transaction.status = 'accepted'
+    transaction.status = 'pending'
     transaction.save()
     listing = transaction.listing
     listing.is_active = False
