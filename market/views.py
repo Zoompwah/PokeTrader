@@ -18,7 +18,7 @@ def notifications(request):
 
 def card_detail(request, collection_id):
     collection = Collection.objects.get(pk=collection_id)
-    listing = Listing.objects.get(collection=collection)
+    listing = Listing.objects.filter(collection=collection).order_by('-id').first()
     return render(request, 'card_detail.html', {'collection': collection, 'listing': listing})
 
 def create_listing(request):
@@ -156,6 +156,9 @@ def complete_transaction(request, notification_id):
     listing.save()
     notification.read = True
     notification.save()
+    collection = transaction.listing.collection
+    collection.user = transaction.buyer
+    collection.save()
     Notification.objects.create(
             recipient=transaction.buyer,
             message=f"Your transaction on {transaction.listing.collection.card.name} has been completed by '{transaction.seller}'.",
