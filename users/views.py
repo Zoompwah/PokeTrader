@@ -42,7 +42,7 @@ def custom_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Hello <b>{user.username}</b>! You have been logged in")
-                return redirect("homepage")
+                return redirect("/")
 
         else:
             for key, error in list(form.errors.items()):
@@ -64,7 +64,7 @@ def custom_login(request):
 def custom_logout(request):
     logout(request)
     messages.info(request, "Logged out successfully!")
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('login')
 
 def profile(request, username):
     if request.method == "POST":
@@ -84,7 +84,7 @@ def profile(request, username):
         form.fields['description'].widget.attrs = {'rows': 1}
         return render(
             request=request,
-            template_name="users/profile.html",
+            template_name="profile.html",
             context={"form": form}
             )
     
