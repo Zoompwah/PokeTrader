@@ -12,8 +12,9 @@ def market(request):
     return render(request, 'market.html', {'listings': listings})
 
 def notifications(request):
+    user = request.user
     notifications = Notification.objects.filter(recipient=request.user)
-    return render(request, 'notifications.html', {'notifications': notifications})
+    return render(request, 'notifications.html', {'notifications': notifications, 'user': user})
 
 def card_detail(request, collection_id):
     collection = Collection.objects.get(pk=collection_id)
@@ -49,7 +50,12 @@ def purchase_card(request, listing_id):
         )
         Notification.objects.create(
             recipient=listing.seller,
-            message=f"{request.user.username} has purchased your card '{listing.collection.card.name}'.",
+            message=f"{request.user.username} has purchased your card '{listing.collection.card.name}', email {request.user.email} to continue your transaction.",
+            transaction=transaction
+        )
+        Notification.objects.create(
+            recipient=request.user,
+            message=f"You have purchased '{listing.collection.card.name}' card from {listing.seller}, email {listing.seller.email} to continue your transaction.",
             transaction=transaction
         )
         listing.is_active = False 
@@ -96,7 +102,12 @@ def accept_offer(request, notification_id):
     notification.save()
     Notification.objects.create(
             recipient=transaction.buyer,
-            message=f"Your offer of ${transaction.price} on {transaction.listing.collection.card.name} has been approved by '{transaction.seller}'.",
+            message=f"Your offer of ${transaction.price} on {transaction.listing.collection.card.name} has been approved by '{transaction.seller}', email {transaction.seller.email} to continue your transaction.",
+            transaction=transaction
+            )
+    Notification.objects.create(
+            recipient=transaction.seller,
+            message=f"You have approved offer of ${transaction.price} on {transaction.listing.collection.card.name}, email {transaction.buyer.email} to continue your transaction.",
             transaction=transaction
             )
     return redirect('market:notifications')
@@ -106,6 +117,9 @@ def reject_offer(request, notification_id):
     transaction = notification.transaction
     transaction.status = 'rejected'
     transaction.save()
+    listing = transaction.listing
+    listing.is_active = True
+    listing.save()
     Notification.objects.create(
             recipient=transaction.buyer,
             message=f"Your offer of ${transaction.price} on {transaction.listing.collection.card.name} has been rejected by '{transaction.seller}'.",
@@ -113,4 +127,38 @@ def reject_offer(request, notification_id):
             )
     notification.read = True
     notification.save()
+    return redirect('market:notifications')
+
+def cancel_transaction(request, notification_id):
+    notification = Notification.objects.get(pk=notification_id, recipient=request.user)
+    transaction = notification.transaction
+    transaction.status = 'cancelled'
+    transaction.save()
+    listing = transaction.listing
+    listing.is_active = True
+    listing.save()
+    notification.read = True
+    notification.save()
+    Notification.objects.create(
+            recipient=transaction.buyer,
+            message=f"Your transaction on {transaction.listing.collection.card.name} has been cancelled by '{transaction.seller}'.",
+            transaction=transaction
+            )
+    return redirect('market:notifications')
+
+def complete_transaction(request, notification_id):
+    notification = Notification.objects.get(pk=notification_id, recipient=request.user)
+    transaction = notification.transaction
+    transaction.status = 'completed'
+    transaction.save()
+    listing = transaction.listing
+    listing.is_active = False
+    listing.save()
+    notification.read = True
+    notification.save()
+    Notification.objects.create(
+            recipient=transaction.buyer,
+            message=f"Your transaction on {transaction.listing.collection.card.name} has been completed by '{transaction.seller}'.",
+            transaction=transaction
+            )
     return redirect('market:notifications')
