@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decks List</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('https://static.prod.pokemon.com/images/pikachu_pattern.png');
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-4">Decks List</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for deck in decks %}
+                <div class="bg-white p-4 rounded-lg shadow-md">
+                    <h2 class="text-lg font-bold mb-2">{{ deck.deck_name }}</h2>
+                    <p class="mb-2">Description: {{ deck.deck_description }}</p>
+                    <p class="mb-2">Rating: {{ deck.deck_rating }}</p>
+                    <p class="mb-2">Created by: {{ deck.trader }}</p>
+                    <h3 class="text-md font-bold mb-2">Cards in the Deck:</h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        {% for deck_card in deck.deckcard_set.all %}
+                            <div class="flex items-center">
+                                <img src="{{ deck_card.card.card_image }}" alt="{{ deck_card.card.name }}" class="w-8 h-8 mr-2">
+                                <span>{{ deck_card.card.name }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <a href="{% url 'view_deck_details' deck.pk %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 block text-center">
+                        View Deck Detail
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
