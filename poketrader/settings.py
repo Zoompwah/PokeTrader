@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-t#ka*0drdm2h6vj!hu1m*#h^zgba6#+y2=pizqt*c7t7-m+h!w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*.koyeb.app', 'localhost', '127.0.0.1']
 
 
 # Application definition
