@@ -18,7 +18,7 @@ def register(request):
             user = form.save()
             login(request, user)
             messages.success(request, f"New account created: {user.username}")
-            return HttpResponseRedirect('/users/register/')
+            return HttpResponseRedirect('/')
 
         else:
             for error in list(form.errors.values()):
