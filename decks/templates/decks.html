@@ -1,3 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'navbar.html' %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,6 +51,28 @@
                 </div>
             {% endfor %}
         </div>
+        <!-- Pagination -->
+        <div class="mt-8 text-center">
+            {% if decks.has_other_pages %}
+                {% if decks.has_previous %}
+                    <a href="?page=1" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">First</a>
+                    <a href="?page={{ decks.previous_page_number }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">Previous</a>
+                {% endif %}
+                {% for num in decks.paginator.page_range %}
+                    {% if num == decks.number %}
+                        <span class="bg-blue-500 text-white font-bold py-2 px-4 rounded mr-2">{{ num }}</span>
+                    {% elif num > decks.number|add:'-3' and num < decks.number|add:'3' %}
+                        <a href="?page={{ num }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if decks.has_next %}
+                    <a href="?page={{ decks.next_page_number }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">Next</a>
+                    <a href="?page={{ decks.paginator.num_pages }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">Last</a>
+                {% endif %}
+            {% endif %}
+        </div>
     </div>
 </body>
 </html>
+
+{% endblock content %}
