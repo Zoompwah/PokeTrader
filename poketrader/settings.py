@@ -42,14 +42,15 @@ INSTALLED_APPS = [
     'collection',
     'crispy_forms',
     'crispy_bootstrap4',
+    "crispy_tailwind",
     'poketrader',
     'users',    
     'market',
     'main',
     'decks',
 ]
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = 'tailwind'
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
