@@ -12,12 +12,11 @@
                 <a href="{% url 'market:reject_offer' notification.id %}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Reject</a>
                 {% endif %}
                 {% if user == notification.transaction.listing.seller %}
-                    {% if notification.transaction.status == 'pending' %}
+                    {% if notification.transaction.status == 'pending' and notification.read == False %}
                     <a href="{% url 'market:cancel_transaction' notification.id %}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Cancel</a>
                     <a href="{% url 'market:complete_transaction' notification.id %}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Mark as Complete</a>
                     {% endif %}
                 {% endif %}
-                <a href="{% url 'market:mark_notification_read' notification.id %}" class="ml-4 text-blue-400 hover:text-blue-600 cursor-pointer">Mark as read</a>
             </div>
         </div>
         {% endfor %}
