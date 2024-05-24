@@ -15,5 +15,6 @@ COPY . .
 RUN python manage.py tailwind install
 RUN python manage.py tailwind build
 RUN python manage.py collectstatic --noinput --clear
+RUN python manage.py migrate
 
 CMD gunicorn poketrader.wsgi:application --bind 0.0.0.0:8000
