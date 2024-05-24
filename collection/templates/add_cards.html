@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% include 'navbar.html' %}
 <div class="bg-repeat flex flex-col items-center justify-center px-6 py-6 mx-auto" style ="background-image: url(https://static.prod.pokemon.com/images/pikachu_pattern.png)">
     <form method="post">
         <div class="text-center mb-8 flex justify-between">
@@ -22,7 +23,7 @@
                     <div class="p-4 text-center">
                         <div class="flex items-center justify-center">
                             <input type="checkbox" name="cards" value="{{c.id}}" id="card{{c.id}}" class="form-checkbox h-5 w-5 text-blue-600 opacity-0 absolute left-0 top-0">
-                            <label for="card{{c.id}}" class="text-gray-700">{{ c.name }}</label>
+                            <label for="card{{c.id}}" class="text-gray-700 select-none" onclick="document.getElementById('card{{ c.id }}').click(); document.getElementById('card{{ c.id }}').checked? document.getElementById('card{{ c.id }}_div').classList.add('!bg-blue-300'):document.getElementById('card{{ c.id }}_div').classList.remove('!bg-blue-300')">{{ c.name }}</label>
                         </div>
                     </div>
                 </div>
