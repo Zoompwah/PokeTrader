@@ -1,23 +1,37 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Login</title>
+{% endblock meta %}
+
 {% block content %}
-    <div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Log In</legend>
-                    {{ form.as_p }}
+<section class="bg-gray-50 dark:bg-gray-900">
+  <div class="bg-repeat shadow-xl flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen -space-y-10 lg:py-0" style ="background-image: url(https://static.prod.pokemon.com/images/pikachu_pattern.png)" >
+      <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+                <img class="w-8 h-8 mr-2" src="https://cdn.discordapp.com/attachments/314315831465213953/1242752436670697512/pikachu.png?ex=664efae6&is=664da966&hm=56802e31720aaf8b63a88fe5cc0e0d40c1ba2ad641e30c434d95f798fa78c828&" alt="logo">
+                PokeTrader   
+            </a>
+              <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                Log in to your Pokémon Trainer Club account
+              </h1>
+              <form method="POST" class="space-y-4 md:space-y-6">
+                  {% csrf_token %}
+                <div>
+                    <input type="text" name="username" id="id_username" class="bg-gray-800 border-gray-950 text-white sm:text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-white dark:text-white dark:focus:ring-yellow-500 dark:focus:border-yellow-500" placeholder="Username" required="">
                 </div>
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Login</button>
-            </div>
-        </form>
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                Need An Account? <a class="ml-2" href="{% url 'register' %}">Sign Up Now</a>
-            </small><br>
-            <small class="text-muted">
-                <a href="/">Forgot password?</a>
-            </small>
-        </div>
-    </div>
+                <div>
+                    <input type="password" name="password" id="id_password" placeholder="Password" class="bg-gray-800 border border-gray-950 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-yellow-500 dark:focus:border-yellow-500" required="">
+                </div>
+                  <button type="submit" class="w-full text-white bg-green-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Log in</button>
+                  <p class="text-sm font-light text-gray-900 dark:text-gray-400">
+                      Don’t have an account? <a href="{% url 'register' %}" class="font-medium text-gray-900 hover:underline dark:text-primary-500">Sign up</a>
+                  </p>
+              </form>
+          </div>
+      </div>
+      <img class="object-scale-down w-72 h-72 " src="https://static.prod.pokemon.com/images/starter_mascots.png" alt="pokemon">
+  </div>
+</section>
 {% endblock content %}
