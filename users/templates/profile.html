@@ -1,12 +1,16 @@
 {% block content %}
 
+{% include navbar.html % }
+
 {% load crispy_forms_tags %}
+
+{% load tailwind_filters %}
 
 <div class="content-section col-lg-12 col-md-12 col-sm-12 tutorial-style min-h-screen">
     <legend class="border-b mb-4 text-lg font-bold">Profile Information:</legend>
     <div class="flex items-start">
         <div class="flex-1">
-            <h2 class="text-xl font-semibold">{{ form.instance.username }}
+            <h2 class="text-xl font-semibold text-green-500">{{ form.instance.username }}
                 <small class="text-sm text-gray-500">({{ form.instance.status }})</small>
             </h2>
             <p class="text-sm text-black">{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
@@ -33,9 +37,13 @@
 
             <div class="mt-4">
                 <button class="btn-update">Update</button>
+                <a href="/" class="btn btn-outline-info mt-4">
+                    <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Back</button>
+                </a>
             </div>
         </form>
     </fieldset>
     {% endif %}
+
 </div>
 {% endblock content %}
