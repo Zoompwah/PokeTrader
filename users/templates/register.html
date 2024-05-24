@@ -1,23 +1,36 @@
+{% extends 'base.html' %}
+
 {% load crispy_forms_tags %}
+
+{% block meta %}
+    <title>Login</title>
+{% endblock meta %}
+
+
 {% block content %}
-    <div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Start Trading Now!</legend>
-                {{ form|crispy }}
-            </fieldset>
-
-            By registering, you accept the Terms of Service and Privacy Notice
-
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Sign Up</button>
-            </div>
-        </form>
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                Already Have An Account? <a class="ml-2" href="/users/login">Sign In</a>
-            </small>
-        </div>
-    </div>
+<section class="bg-gray-50 dark:bg-gray-900">
+  <div class="bg-repeat flex flex-col items-center justify-center px-6 py-6 mx-auto md:h-screen lg:py-0" style ="background-image: url(https://static.prod.pokemon.com/images/pikachu_pattern.png)">
+      <a href="#" class="flex items-center mb-1 text-2xl font-semibold text-gray-900 dark:text-white">
+          <img class="w-8 h-8 mr-2" src="https://cdn.discordapp.com/attachments/314315831465213953/1242752436670697512/pikachu.png?ex=664efae6&is=664da966&hm=56802e31720aaf8b63a88fe5cc0e0d40c1ba2ad641e30c434d95f798fa78c828&" alt="logo">
+          PokeTrader   
+      </a>
+      <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                  Start Trading Now!
+              </h1>
+              <form method="POST" class="space-y-4 md:space-y-6">
+                  {% csrf_token %}
+                  <fieldset class="form-group">
+                      {{ form|crispy }}
+                  </fieldset>
+                  <button class="w-full text-white bg-green-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="submit">Sign Up</button>
+                  <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                      Already Have An Account? <a class="font-medium text-primary-600 hover:underline dark:text-primary-500" href="/users/login">Sign In</a>
+                  </p>
+              </form>
+          </div>
+      </div>
+  </div>
+</section>
 {% endblock content %}

@@ -4,8 +4,10 @@
  * If you need the full config, get it from here:
  * https://unpkg.com/browse/tailwindcss@latest/stubs/defaultConfig.stub.js
  */
+const colors = require('tailwindcss/colors')
 
 module.exports = {
+    darkMode: 'class',
     content: [
         /**
          * HTML. Paths to Django template files that will contain Tailwind CSS classes.
@@ -42,6 +44,47 @@ module.exports = {
         // '../../**/*.py'
     ],
     theme: {
+        extend: {
+            colors: {
+                ...colors,
+            },
+        },
+        fontFamily: {
+            'body': [
+                'Inter', 
+                'ui-sans-serif', 
+                'system-ui', 
+                '-apple-system', 
+                'system-ui', 
+                'Segoe UI', 
+                'Roboto', 
+                'Helvetica Neue', 
+                'Arial', 
+                'Noto Sans', 
+                'sans-serif', 
+                'Apple Color Emoji', 
+                'Segoe UI Emoji', 
+                'Segoe UI Symbol', 
+                'Noto Color Emoji'
+            ],
+            'sans': [
+                'Inter', 
+                'ui-sans-serif', 
+                'system-ui', 
+                '-apple-system', 
+                'system-ui', 
+                'Segoe UI', 
+                'Roboto', 
+                'Helvetica Neue', 
+                'Arial', 
+                'Noto Sans', 
+                'sans-serif', 
+                'Apple Color Emoji', 
+                'Segoe UI Emoji', 
+                'Segoe UI Symbol', 
+                'Noto Color Emoji'
+            ]
+        },
         extend: {},
     },
     plugins: [
