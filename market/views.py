@@ -85,9 +85,17 @@ def accept_offer(request, notification_id):
     transaction = notification.transaction
     transaction.status = 'accepted'
     transaction.save()
+    listing = transaction.listing
+    listing.is_active = False
+    listing.save()
     notification.read = True
     notification.save()
-    return redirect('notifications')
+    Notification.objects.create(
+            recipient=transaction.buyer,
+            message=f"Your offer of ${transaction.price} on {transaction.listing.collection.card.name} has been approved by '{transaction.seller}'.",
+            transaction=transaction
+            )
+    return redirect('market:notifications')
 
 def reject_offer(request, notification_id):
     notification = Notification.objects.get(pk=notification_id, recipient=request.user)
@@ -96,4 +104,4 @@ def reject_offer(request, notification_id):
     transaction.save()
     notification.read = True
     notification.save()
-    return redirect('notifications')
+    return redirect('market:notifications')
