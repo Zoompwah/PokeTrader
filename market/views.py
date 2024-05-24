@@ -48,26 +48,30 @@ def create_listing(request):
 def purchase_card(request, listing_id):
     listing = Listing.objects.get(pk=listing_id, is_active=True)
     if request.user != listing.seller:
-        transaction = Transaction.objects.create(
-            listing=listing,
-            buyer=request.user,
-            seller=listing.seller,
-            price=listing.price,
-            status='pending'
-        )
-        Notification.objects.create(
-            recipient=listing.seller,
-            message=f"{request.user.username} has purchased your card '{listing.collection.card.name}', email {request.user.email} to continue your transaction.",
-            transaction=transaction
-        )
-        Notification.objects.create(
-            recipient=request.user,
-            message=f"You have purchased '{listing.collection.card.name}' card from {listing.seller}, email {listing.seller.email} to continue your transaction.",
-            transaction=transaction
-        )
-        listing.is_active = False 
-        listing.save()
-        return redirect('market:market')
+        if not Collection.objects.filter(user=request.user, card=listing.collection.card).exists():
+            transaction = Transaction.objects.create(
+                listing=listing,
+                buyer=request.user,
+                seller=listing.seller,
+                price=listing.price,
+                status='pending'
+            )
+            Notification.objects.create(
+                recipient=listing.seller,
+                message=f"{request.user.username} has purchased your card '{listing.collection.card.name}', email {request.user.email} to continue your transaction.",
+                transaction=transaction
+            )
+            Notification.objects.create(
+                recipient=request.user,
+                message=f"You have purchased '{listing.collection.card.name}' card from {listing.seller}, email {listing.seller.email} to continue your transaction.",
+                transaction=transaction
+            )
+            listing.is_active = False 
+            listing.save()
+            return redirect('market:market')
+        else:
+            messages.error(request, "You already have this card in your collection.")
+            return card_detail(request, listing.collection.id)
     else:
         messages.error(request, "You cannot make offer on your own card.")
         return card_detail(request, listing.collection.id)
@@ -75,23 +79,31 @@ def purchase_card(request, listing_id):
 def make_offer(request, listing_id):
     listing = Listing.objects.get(pk=listing_id, is_active=True)
     if request.user != listing.seller:
-        if request.method == 'POST':
-            offer_price = request.POST.get('offer_price')
-            if request.user != listing.seller:
-                transaction = Transaction.objects.create(
-                    listing=listing,
-                    buyer=request.user,
-                    seller=listing.seller,
-                    price=offer_price,
-                    status='offer_made',
-                    offer_made=True
-                )
-                Notification.objects.create(
-                recipient=listing.seller,
-                message=f"{request.user.username} has made an offer of ${offer_price} on your card '{listing.collection.card.name}'.",
-                transaction=transaction
-                )
-                return redirect('market:market')
+        if not Collection.objects.filter(user=request.user, card=listing.collection.card).exists():
+            if not Transaction.objects.filter(listing=listing, buyer=request.user, offer_made=True).exists():
+                if request.method == 'POST':
+                    offer_price = request.POST.get('offer_price')
+                    if request.user != listing.seller:
+                        transaction = Transaction.objects.create(
+                            listing=listing,
+                            buyer=request.user,
+                            seller=listing.seller,
+                            price=offer_price,
+                            status='offer_made',
+                            offer_made=True
+                        )
+                        Notification.objects.create(
+                        recipient=listing.seller,
+                        message=f"{request.user.username} has made an offer of ${offer_price} on your card '{listing.collection.card.name}'.",
+                        transaction=transaction
+                        )
+                        return redirect('market:market')
+            else:
+                messages.error(request, "You have already made an offer on this card.")
+                return card_detail(request, listing.collection.id)
+        else:
+            messages.error(request, "You already have this card in your collection.")
+            return card_detail(request, listing.collection.id)
     else:
         messages.error(request, "You cannot make an offer on your own card.")
         return card_detail(request, listing.collection.id)

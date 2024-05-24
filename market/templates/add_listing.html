@@ -12,7 +12,7 @@
                     <label for="collection" class="block text-sm font-medium text-black-300">Card</label>
                     <select id="collection" name="collection" class="block w-full p-4 pl-10 text-sm border border-gray-300 rounded-lg focus:ring-blue-500">
                         {% for collection in collections %}
-                        <option value="{{ collection.card.id }}">{{ collection.card.name }}</option>
+                        <option value="{{ collection.id }}">{{ collection.card.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
