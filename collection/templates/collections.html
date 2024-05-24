@@ -1,19 +1,39 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container p-8">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Card Collection</h1>
-        </div>
+<div class="bg-repeat flex flex-col items-center justify-center px-6 py-6 mx-auto min-h-screen" style ="background-image: url(https://static.prod.pokemon.com/images/pikachu_pattern.png)">
+    <div>
+    <div class="text-center mb-8 flex justify-between items-center min-w-[50vw]">
+        <h1 class="text-3xl font-bold">Card Collection</h1>
+        <a href="/collection/add" class="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Add Cards
+        </a>
     </div>
-    <div class="row">
-        <div class="grid grid-cols-4 gap-8 justify-around">
+    <div class="max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {% for c in collection %}
-            <div class="flex flex-col">
-                <img src="{{ c.card_image }}" alt="{{ c.name }}">
+            <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                <div class="h-64 flex items-center justify-center">
+                    <img src="{{ c.card_image }}" alt="{{ c.name }}" class="object-contain h-full">
+                </div>
+                <div class="p-4 text-center">
+                    <p class="text-gray-700 font-medium">{{ c.name }}</p>
+                    <form method="post" action="/collection/remove/{{ c.id }}">
+                        {% csrf_token %}
+                        <button type="submit" class="mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                            Remove
+                        </button>
+                    </form>
+                </div>
             </div>
+            {% empty %}
+                <div class="bg-white shadow-md rounded-lg overflow-hidden col-span-full">
+                    <div class="p-4">
+                        <p class="text-gray-700 font-medium">You don't have any cards in your collection.</p>
+                    </div>
+                </div>
             {% endfor %}
         </div>
+    </div>
     </div>
 </div>
 {% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+{% include 'navbar.html'%}
+
+<div class="container mx-auto px-4 py-8">
+
+    <div class="flex justify-center mb-8">
+        <form class="w-full max-w-lg" method="GET" action="{% url 'market:market' %}">
+            {% csrf_token %}
+            <div class="relative flex items-center">
+                <input type="search" name="keyword" value="{{ request.GET.keyword }}" class="flex-1 p-4 pl-10 text-sm border border-gray-300 rounded-lg focus:ring-blue-500" placeholder="Search games">
+                <button type="submit" class="ml-4 bg-blue-700 hover:bg-blue-800 text-white font-medium rounded-lg text-sm px-4 py-2 focus:ring-blue-500">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-6">
+        {% for listing in listings %}
+        <a href="{% url 'market:card_detail' listing.collection.id %}" class="text-center text-black rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <img src="{{ listing.collection.card.card_image }}" alt="{{ listing.collection.card.name }}" class="w-full h-auto">
+            <div class="p-4 bg-white">
+                <h5 class="font-bold text-xl">{{ listing.collection.card.name }}</h5>
+                <p class="text-black-400">Price: Rp.{{ listing.price }}</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
