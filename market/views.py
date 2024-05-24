@@ -5,6 +5,7 @@ from collection.models import Collection
 import ast
 from django.contrib import messages
 
+@login_required
 def market(request):
     query = request.GET.get('keyword', '')
     if query:
@@ -13,11 +14,13 @@ def market(request):
         listings = Listing.objects.filter(is_active=True)
     return render(request, 'market.html', {'listings': listings})
 
+@login_required
 def notifications(request):
     user = request.user
     notifications = Notification.objects.filter(recipient=request.user)
     return render(request, 'notifications.html', {'notifications': notifications, 'user': user})
 
+@login_required
 def card_detail(request, collection_id):
     collection = Collection.objects.get(pk=collection_id)
     listing = Listing.objects.filter(collection=collection).order_by('-id').first()
@@ -27,6 +30,7 @@ def card_detail(request, collection_id):
     collection.card.weaknesses = ast.literal_eval(collection.card.weaknesses)
     return render(request, 'card_detail.html', {'collection': collection, 'listing': listing})
 
+@login_required
 def create_listing(request):
     if request.method == 'POST':
         collection = request.POST.get('collection')
@@ -44,7 +48,7 @@ def create_listing(request):
         collections = Collection.objects.filter(user=request.user).exclude(id__in=active_listings)
     return render(request, 'add_listing.html', {'collections': collections})
 
-
+@login_required
 def purchase_card(request, listing_id):
     listing = Listing.objects.get(pk=listing_id, is_active=True)
     if request.user != listing.seller:
@@ -76,6 +80,7 @@ def purchase_card(request, listing_id):
         messages.error(request, "You cannot make offer on your own card.")
         return card_detail(request, listing.collection.id)
 
+@login_required
 def make_offer(request, listing_id):
     listing = Listing.objects.get(pk=listing_id, is_active=True)
     if request.user != listing.seller:
@@ -109,6 +114,7 @@ def make_offer(request, listing_id):
         return card_detail(request, listing.collection.id)
     return render(request, 'card_detail.html', {'listing': listing})
 
+@login_required
 def accept_offer(request, notification_id):
     notification = Notification.objects.get(pk=notification_id, recipient=request.user)
     transaction = notification.transaction
@@ -131,10 +137,12 @@ def accept_offer(request, notification_id):
             )
     return redirect('market:notifications')
 
+@login_required
 def reject_offer(request, notification_id):
     notification = Notification.objects.get(pk=notification_id, recipient=request.user)
     transaction = notification.transaction
     transaction.status = 'rejected'
+    transaction.offer_made = False
     transaction.save()
     listing = transaction.listing
     listing.is_active = True
@@ -148,6 +156,7 @@ def reject_offer(request, notification_id):
     notification.save()
     return redirect('market:notifications')
 
+@login_required
 def cancel_transaction(request, notification_id):
     notification = Notification.objects.get(pk=notification_id, recipient=request.user)
     transaction = notification.transaction
@@ -165,6 +174,7 @@ def cancel_transaction(request, notification_id):
             )
     return redirect('market:notifications')
 
+@login_required
 def complete_transaction(request, notification_id):
     notification = Notification.objects.get(pk=notification_id, recipient=request.user)
     transaction = notification.transaction
