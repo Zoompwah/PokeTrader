@@ -3,13 +3,26 @@ from .models import Deck, DeckCard, UserRating
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def view_decks(request):
-    decks = Deck.objects.all().order_by('-deck_rating')
+    deck_list = Deck.objects.all().order_by('-deck_rating')
+    paginator = Paginator(deck_list, 4)  # Menampilkan 4 dek per halaman
+    page = request.GET.get('page')
+    try:
+        decks = paginator.page(page)
+    except PageNotAnInteger:
+        # Jika 'page' bukan integer, tampilkan halaman pertama
+        decks = paginator.page(1)
+    except EmptyPage:
+        # Jika 'page' lebih besar dari jumlah halaman yang tersedia, tampilkan halaman terakhir
+        decks = paginator.page(paginator.num_pages)
+    
     for deck in decks:
         deck.deck_rating = "{:.1f}".format(deck.deck_rating)
 
     return render(request, 'decks.html', {'decks': decks})
+
 
 def view_deck_detail(request, deck_id):
     deck = get_object_or_404(Deck, pk=deck_id)
@@ -23,21 +36,24 @@ def view_deck_detail(request, deck_id):
 
     # Format deck rating to display only one digit after the decimal point
     deck_rating_formatted = "{:.1f}".format(deck.deck_rating)
+    cards = [c.card for c in deck_cards]
 
     context = {
         'deck': deck,
         'deck_rating_formatted': deck_rating_formatted,  # Add formatted rating to the context
-        'cards': [c.card for c in deck_cards],
+        'cards': cards,
         'is_trader': is_trader,
     }
-    
     return render(request, 'deck_detail.html', context)
 
-@login_required
 def add_deck_rating(request, deck_id):
     if request.method == 'POST':
         deck = get_object_or_404(Deck, pk=deck_id)
         new_rating = float(request.POST.get('rating'))
+
+        if request.user.is_anonymous:
+            messages.error(request, "You must be logged in to rate a deck.")
+            return redirect('view_deck_details', deck_id=deck_id)
         
         # Check if the user has already rated the deck
         if UserRating.objects.filter(user=request.user, deck=deck).exists():
