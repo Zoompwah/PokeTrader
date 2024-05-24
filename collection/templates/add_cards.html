@@ -12,7 +12,7 @@
             {% csrf_token %}
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                 {% for c in all_cards %}
-                <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                <div class="bg-white shadow-md rounded-lg overflow-hidden" onclick="document.getElementById('card{{ c.id }}').click()">
                     <div class="h-64 flex items-center justify-center">
                         <img src="{{ c.card_image }}" alt="{{ c.name }}" class="object-contain h-full">
                     </div>
