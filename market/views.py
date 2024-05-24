@@ -1,34 +1,38 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from .models import Listing, Transaction, Notification
-from collection.models import Card
-from .forms import ListingForm
+from collection.models import Collection
 
-@login_required
 def market(request):
-    listings = Listing.objects.filter(is_active=True).exclude(seller=request.user)
-    notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
-    return render(request, 'market.html', {'listings': listings,'notifications': notifications})
+    listings = Listing.objects.filter(is_active=True)
+    return render(request, 'market.html', {'listings': listings})
 
-@login_required
-def card_detail(request, card_id):
-    card = Card.objects.get(pk=card_id)
-    return render(request, 'card_detail.html', {'card': card})
+def notifications(request):
+    notifications = Notification.objects.filter(recipient=request.user)
+    return render(request, 'notifications.html', {'notifications': notifications})
 
-@login_required
+def card_detail(request, collection_id):
+    collection = Collection.objects.get(pk=collection_id)
+    listing = Listing.objects.get(collection=collection)
+    return render(request, 'card_detail.html', {'collection': collection, 'listing': listing})
+
 def create_listing(request):
     if request.method == 'POST':
-        form = ListingForm(request.POST, user=request.user)
-        if form.is_valid():
-            listing = form.save(commit=False)
-            listing.seller = request.user
-            listing.save()
-            return redirect('market')
+        collection = request.POST.get('collection')
+        price = request.POST.get('price')
+        seller = request.user
+        new_listing = Listing.objects.create(
+            collection=Collection.objects.get(pk=collection),
+            price=price,
+            seller=seller
+        )
+        new_listing.save()
+        return redirect('market:market')
     else:
-        form = ListingForm(user=request.user)
-    return render(request, 'create_listing.html', {'form': form})
+        collections = Collection.objects.filter(user=request.user)
+    return render(request, 'add_listing.html', {'collections': collections})
 
-@login_required
+
 def purchase_card(request, listing_id):
     listing = Listing.objects.get(pk=listing_id, is_active=True)
     if request.user != listing.seller:
@@ -41,15 +45,14 @@ def purchase_card(request, listing_id):
         )
         Notification.objects.create(
             recipient=listing.seller,
-            message=f"{request.user.username} has purchased your card '{listing.card.name}'.",
+            message=f"{request.user.username} has purchased your card '{listing.collection.card.name}'.",
             transaction=transaction
         )
         listing.is_active = False 
         listing.save()
-        return redirect('transaction_history')
-    return redirect('market')
+        return redirect('market:market')
+    return redirect('market:market')
 
-@login_required
 def make_offer(request, listing_id):
     listing = Listing.objects.get(pk=listing_id, is_active=True)
     if request.method == 'POST':
@@ -65,20 +68,18 @@ def make_offer(request, listing_id):
             )
             Notification.objects.create(
             recipient=listing.seller,
-            message=f"{request.user.username} has made an offer of ${offer_price} on your card '{listing.card.name}'.",
+            message=f"{request.user.username} has made an offer of ${offer_price} on your card '{listing.collection.card.name}'.",
             transaction=transaction
             )
-            return redirect('market')
-    return render(request, 'make_offer.html', {'listing': listing})
+            return redirect('market:market')
+    return render(request, 'card_detail.html', {'listing': listing})
 
-@login_required
 def mark_notification_read(request, notification_id):
     notification = Notification.objects.get(pk=notification_id, recipient=request.user)
     notification.read = True
     notification.save()
     return redirect(request.GET.get('next', 'market:market'))
 
-@login_required
 def accept_offer(request, notification_id):
     notification = Notification.objects.get(pk=notification_id, recipient=request.user)
     transaction = notification.transaction
@@ -88,7 +89,6 @@ def accept_offer(request, notification_id):
     notification.save()
     return redirect('notifications')
 
-@login_required
 def reject_offer(request, notification_id):
     notification = Notification.objects.get(pk=notification_id, recipient=request.user)
     transaction = notification.transaction
